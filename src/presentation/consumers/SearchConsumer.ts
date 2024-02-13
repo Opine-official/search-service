@@ -9,6 +9,7 @@ const consumer = kafka.consumer({ groupId: 'search-consumer-group' });
 const run = async () => {
   await consumer.connect();
   await consumer.subscribe({ topic: 'user-register-topic' });
+  await consumer.subscribe({ topic: 'post-create-topic' });
   const userRepository = new UserRepository();
   const saveUser = new SaveUser(userRepository);
   const postRepository = new PostRepository();
