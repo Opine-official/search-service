@@ -22,6 +22,8 @@ function arrayLimit(val: string[]): boolean {
   return val.length <= 5;
 }
 
+PostSchema.index({ title: 'text', description: 'text' });
+
 type PostModel = InferSchemaType<typeof PostSchema>;
 
 const PostModel = mongoose.model('Post', PostSchema);

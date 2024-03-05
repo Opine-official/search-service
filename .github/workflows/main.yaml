@@ -1,4 +1,4 @@
-name: feed-service-flow
+name: search-service-flow
 
 on:
   push:
@@ -15,17 +15,17 @@ jobs:
       - name: Login to docker hub
         run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_TOKEN }}
       - name: Build docker image
-        run: docker build -t aravsanj/opine-feed-service .
+        run: docker build -t aravsanj/opine-search-service .
       - name: Publish image to docker hub
-        run: docker push aravsanj/opine-feed-service:latest
+        run: docker push aravsanj/opine-search-service:latest
 
   deploy:
     needs: build
     runs-on: [self-hosted]
     steps:
       - name: Pull image from docker hub
-        run: docker pull aravsanj/opine-feed-service:latest
+        run: docker pull aravsanj/opine-search-service:latest
       - name: Delete old container
-        run: docker rm -f opine-feed-service-container
+        run: docker rm -f opine-search-service-container
       - name: Run docker container
-        run: docker run -d -p 3001:3001 --name opine-feed-service-container aravsanj/opine-feed-service
+        run: docker run -d -p 3001:3001 --name opine-search-service-container aravsanj/opine-search-service
