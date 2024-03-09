@@ -13,12 +13,12 @@ export class VerifyUser implements IUseCase<IVerifyUserDTO, void> {
       return new Error('Missing token');
     }
 
-    if (!process.env.JWT_SECRET) {
+    if (!process.env.USER_JWT_SECRET) {
       return new Error('Missing JWT secret');
     }
 
     try {
-      verifyToken(input.token, process.env.JWT_SECRET);
+      verifyToken(input.token, process.env.USER_JWT_SECRET);
     } catch {
       return new Error('Invalid token');
     }
