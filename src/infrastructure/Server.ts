@@ -4,6 +4,8 @@ import { VerifyUserController } from '../presentation/controllers/VerifyUserCont
 import cookieParser from 'cookie-parser';
 import { SearchPostsController } from '../presentation/controllers/SearchPostsController';
 import { FindByTagController } from '../presentation/controllers/FindByTagController';
+import { checkUserTokenVersion } from './middlewares/checkTokenVersion';
+import { authenticateRole } from '@opine-official/authentication';
 
 interface ServerControllers {
   verifyUserController: VerifyUserController;
@@ -37,13 +39,23 @@ export class Server {
 
     app.get('/test', (req, res) => res.send('Search service is running'));
 
-    app.get('/', (req, res) => {
-      controllers.searchPostsController.handle(req, res);
-    });
+    app.get(
+      '/',
+      authenticateRole('user'),
+      checkUserTokenVersion,
+      (req, res) => {
+        controllers.searchPostsController.handle(req, res);
+      },
+    );
 
-    app.get('/tag', (req, res) => {
-      controllers.findByTagController.handle(req, res);
-    });
+    app.get(
+      '/tag',
+      authenticateRole('user'),
+      checkUserTokenVersion,
+      (req, res) => {
+        controllers.findByTagController.handle(req, res);
+      },
+    );
 
     app.get('/verifyUser', (req, res) => {
       controllers.verifyUserController.handle(req, res);
